@@ -1,0 +1,31 @@
+.wrapper {
+  margin: 1.5rem;
+}
+
+.display {
+  box-sizing: border-box;
+  background-color: black;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  color: white;
+  text-align: right;
+  border: none;
+  padding: 5px;
+  width: 65%;
+}
+
+
+.buttons {
+  display: flex;
+  width: 65%;
+}
+
+.button {
+  flex: 4;
+  font-size: 1.5rem;
+  padding: .25rem 0;
+  margin: .2rem;
+  border-radius: .25rem;
+}
+
+
