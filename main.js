@@ -1,11 +1,11 @@
-const display = document.querySelector('.display');
+const display = document.querySelector(".display");
 
 // 数字の入力
 function inputNumber(num) {
   const value = display.value;
   if (value === "0では除算できません") {
-    if (num === '0' || num === '00') {
-      display.value = '0';
+    if (num === "0" || num === "00") {
+      display.value = "0";
       return;
     }
     display.value = num;
@@ -17,13 +17,13 @@ function inputNumber(num) {
     return;
   }
 
-  if (num == '00') {
+  if (num == "00") {
     const expr = display.value;
     const lastNumber = expr.split(/[+\-×÷]/).pop();
-    if (lastNumber === '' || display.value === '0') {
+    if (lastNumber === "" || display.value === "0") {
       return;
     } else {
-      display.value += '00';
+      display.value += "00";
       return; 
     }
   }
@@ -58,7 +58,7 @@ function inputOperator(op) {
 
   const last = display.value.slice(-1);
   if (display.value === "0") {
-    if (op === '-') {
+    if (op === "-") {
       display.value = op;
     }
     return;
@@ -165,9 +165,9 @@ function equal () {
   for (let i = 1; i < tokens.length; i += 2) {
     const op = tokens[i];
     const num = Number(tokens[i+1]);
-    if (op === '+') {
+    if (op === "+") {
       result = result + num;  
-    } else if (op === '-') {
+    } else if (op === "-") {
       result = result - num;
     }
   }
@@ -177,5 +177,5 @@ function equal () {
 
 // Cボタン
 function reset() {
-  display.value = '0';
+  display.value = "0";
 };
