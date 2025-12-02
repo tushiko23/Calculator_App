@@ -19,7 +19,7 @@ function inputNumber(num) {
 
   if (num == '00') {
     const expr = display.value;
-    const lastNumber = expr.split(/[+\-*/]/).pop();
+    const lastNumber = expr.split(/[+\-×÷]/).pop();
     if (lastNumber === '' || display.value === '0') {
       return;
     } else {
@@ -40,7 +40,7 @@ function inputDot() {
   }
 
   const expr = display.value;
-  const lastNumber = expr.split(/[+\-*/]/).pop();
+  const lastNumber = expr.split(/[+\-×÷]/).pop();
   if (expr === "") return;
   if (lastNumber === "" || lastNumber.includes(".")) return;
 
@@ -78,8 +78,7 @@ function inputOperator(op) {
   } else {
     display.value += opForDisplay;
   }
-
-}
+};
 
 // -(マイナス)の処理 (符号か演算子を判定)
 function mergeUnaryMinus(tokens) {
@@ -103,7 +102,7 @@ function mergeUnaryMinus(tokens) {
   }
 
   return result;
-}
+};
 
 // 演算子*/を優先して計算する処理
 function applyMulDiv(tokens) {
@@ -135,7 +134,7 @@ function applyMulDiv(tokens) {
 
   }
   return result;
-}
+};
 
 // =(イコール)押下時の処理
 function equal () {
@@ -174,10 +173,9 @@ function equal () {
   }
 
   display.value = result;
-}
+};
 
 // Cボタン
 function reset() {
   display.value = '0';
-}
-
+};
