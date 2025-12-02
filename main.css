@@ -11,13 +11,13 @@
   text-align: right;
   border: none;
   padding: 5px;
-  width: 65%;
+  width: 35%;
 }
 
 
 .buttons {
   display: flex;
-  width: 65%;
+  width: 35%;
 }
 
 .button {
