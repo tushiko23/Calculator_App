@@ -57,23 +57,28 @@ function inputOperator(op) {
   }
 
   const last = display.value.slice(-1);
-  if (display.value === "") {
+  if (display.value === "0") {
     if (op === '-') {
       display.value = op;
     }
     return;
   }
 
-  if ("+-*/".includes(last) && op === "-") {
+  let opForDisplay = op;
+  if (op === "*") opForDisplay = "×";
+  if (op === "/") opForDisplay = "÷";
+
+  if ("+-*/×÷".includes(last) && op === "-") {
     display.value += "-";
     return;
   }
 
-  if ("+-*/".includes(last)) {
-    display.value = display.value.slice(0, -1) + op;
+  if ("+-*/×÷".includes(last)) {
+    display.value = display.value.slice(0, -1) + opForDisplay;
   } else {
-    display.value += op;
+    display.value += opForDisplay;
   }
+
 }
 
 // -(マイナス)の処理 (符号か演算子を判定)
@@ -134,19 +139,20 @@ function applyMulDiv(tokens) {
 
 // =(イコール)押下時の処理
 function equal () {
-  const expr = display.value;
-  let tokens = expr.match(/(\d+(?:\.\d+)?|[+\-*/])/g);
+  const exprDisplay = display.value;
+  const exprForCalc = exprDisplay.replace(/×/g, "*").replace(/÷/g, "/");
+  let tokens = exprForCalc.match(/(\d+(?:\.\d+)?|[+\-*/])/g);
 
   if (!tokens) return; 
-  if (expr === "0では除算できません") {
+  if (exprDisplay === "0では除算できません") {
     display.value = "0";
     return;
   }
-  if (!expr) return; 
+  if (!exprDisplay) return;
 
   // 末尾が演算子なら、計算せずに何もしない
-  const lastChar = expr.slice(-1); // 末尾1文字だけ取り出す
-  if ("+-*/".includes(lastChar)) {
+  const lastChar = exprDisplay.slice(-1); // 末尾1文字だけ取り出す
+  if ("+-*/×÷".includes(lastChar)) {
     return;
   }
 
