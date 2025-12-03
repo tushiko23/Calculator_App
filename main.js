@@ -68,16 +68,12 @@ function inputOperator(op) {
   if (op === "*") opForDisplay = "×";
   if (op === "/") opForDisplay = "÷";
 
-  if ("+-*/×÷".includes(last) && op === "-") {
-    display.value += "-";
-    return;
-  }
-
   if ("+-*/×÷".includes(last)) {
     display.value = display.value.slice(0, -1) + opForDisplay;
-  } else {
-    display.value += opForDisplay;
-  }
+    return;
+  };
+
+  display.value += opForDisplay;
 };
 
 // -(マイナス)の処理 (符号か演算子を判定)
