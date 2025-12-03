@@ -50,17 +50,10 @@ function inputDot() {
 // 演算子の入力
 function inputOperator(op) {
   const value = display.value;
+  const last = value.slice(-1);
 
   if (value === "0では除算できません") {
     display.value = "0";
-    return;
-  }
-
-  const last = display.value.slice(-1);
-  if (display.value === "0") {
-    if (op === "-") {
-      display.value = op;
-    }
     return;
   }
 
@@ -68,7 +61,16 @@ function inputOperator(op) {
   if (op === "*") opForDisplay = "×";
   if (op === "/") opForDisplay = "÷";
 
+  if (display.value === "0" && op === "-") {
+    display.value = "-";
+    return;
+  }
+
   if ("+-*/×÷".includes(last)) {
+    if (op === "-" && last !== "-") {
+      display.value += "-";
+      return;
+    }
     display.value = display.value.slice(0, -1) + opForDisplay;
     return;
   };
