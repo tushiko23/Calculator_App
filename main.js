@@ -118,7 +118,7 @@ function mergeUnaryMinus(tokens) {
       result.push(t);
     }
   }
-
+  
   return result;
 };
 
@@ -190,6 +190,8 @@ function equal () {
     }
   }
 
+  // 電卓で小数点以下9~10桁を四捨五入し値の誤差を防ぐ
+  result = Math.round(result * 1000000000) / 1000000000;
   display.value = result;
 };
 
