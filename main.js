@@ -50,28 +50,48 @@ function inputDot() {
 // 演算子の入力
 function inputOperator(op) {
   const value = display.value;
-  const last = value.slice(-1);
+  const lastRaw = value.slice(-1);
 
   if (value === "0では除算できません") {
     display.value = "0";
     return;
   }
 
-  let opForDisplay = op;
-  if (op === "*") opForDisplay = "×";
-  if (op === "/") opForDisplay = "÷";
+  // 画面表示のx÷を引数で受け取った時にそれを*/で返して内部側で処理
+  const toInternal = (c) => {
+    if (c === "×") return "*";
+    if (c === "÷") return "/";
+    return c;
+  }
+  const last = toInternal(lastRaw);  
+  
+  // 内部表示の*/を引数で受け取った時にそれをx÷で返して外部側で処理
+  const toDisplay = (c) => {
+    if (c === "*") return "×";
+    if (c === "/") return "÷";
+    return c;
+  }
+
+  const opForDisplay = toDisplay(op);
 
   if (display.value === "0" && op === "-") {
     display.value = "-";
     return;
   }
 
-  if ("+-*/×÷".includes(last)) {
+  if ("+-*/".includes(last)) {
+    // 押したのが-で直前が-でない時-を符号として許可する、
     if (op === "-" && last !== "-") {
       display.value += "-";
       return;
     }
-    display.value = display.value.slice(0, -1) + opForDisplay;
+    //　演算子が連続で押された時に全部を捨てて1つにする処理
+    // 6 + - x → 6x
+    let trimmed = value;
+    while ("+-*/".includes(toInternal(trimmed.slice(-1)))) {
+      trimmed = trimmed.slice(0, -1);
+    }
+    display.value = trimmed + opForDisplay;
     return;
   };
 
