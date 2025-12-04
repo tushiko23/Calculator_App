@@ -74,52 +74,15 @@ function inputOperator(op) {
 
   const opForDisplay = toDisplay(op);
 
-  if (display.value === "0" && op === "-") {
-    display.value = "-";
+  if (display.value === "0" ) {
     return;
   }
 
   if ("+-*/".includes(last)) {
-    // 押したのが-で直前が-でない時-を符号として許可する、
-    if (op === "-" && last !== "-") {
-      display.value += "-";
-      return;
-    }
-    //　演算子が連続で押された時に全部を捨てて1つにする処理
-    // 6 + - x → 6x
-    let trimmed = value;
-    while ("+-*/".includes(toInternal(trimmed.slice(-1)))) {
-      trimmed = trimmed.slice(0, -1);
-    }
-    display.value = trimmed + opForDisplay;
     return;
   };
 
   display.value += opForDisplay;
-};
-
-// -(マイナス)の処理 (符号か演算子を判定)
-function mergeUnaryMinus(tokens) {
-  const result = [];
-
-  for (let i = 0; i < tokens.length; i++) {
-    const t = tokens[i];
-    const prev = result[result.length - 1];
-    const next = tokens[i + 1];
-    if (
-      t === "-" &&
-      next !== undefined && 
-      !isNaN(Number(next)) &&
-      (i === 0 || ["+", "-", "*", "/"].includes(prev))
-    ) {
-      result.push("-" + next);
-      i++;
-    } else {
-      result.push(t);
-    }
-  }
-  
-  return result;
 };
 
 // 演算子*/を優先して計算する処理
@@ -173,13 +136,21 @@ function equal () {
     return;
   }
 
-  tokens = mergeUnaryMinus(tokens);
+  // 計算結果で負の数が出たら、計算できるようにする
+  if (exprForCalc.startsWith("-")) {
+  const rest = exprForCalc.slice(1);
+  const parts = rest.match(/(\d+(?:\.\d+)?|[+\-*/])/g) || [];
+
+  if (parts.length > 0 && !isNaN(parts[0])) {
+    parts[0] = "-" + parts[0];
+    tokens = parts;
+  }
+  } 
+
   tokens = applyMulDiv(tokens);
-  // mergeUnaryMinusとapplyMulDiv関数実行後のtokens配列の空列を防止
   if (!tokens) return;
 
   let result = Number(tokens[0]);
-
   for (let i = 1; i < tokens.length; i += 2) {
     const op = tokens[i];
     const num = Number(tokens[i+1]);
